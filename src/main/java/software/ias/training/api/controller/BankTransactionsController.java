@@ -1,12 +1,10 @@
 package software.ias.training.api.controller;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import software.ias.training.api.domain.BankTransaction;
 import software.ias.training.api.repository.TransactionsRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,5 +26,21 @@ public class BankTransactionsController {
             @RequestBody BankTransaction transaction
     ) {
         repository.createBankTransaction(transaction);
+    }
+
+    @RequestMapping(value = "/delete/{actual}", method = RequestMethod.DELETE)
+    public void deleteTransaction(@PathVariable("actual") int actual){
+        repository.deleteBankTransactions(actual);
+    }
+
+    @RequestMapping(value = "/update/{actual}", method = RequestMethod.PUT)
+    public void updateTransaction(@PathVariable ("actual") int actual, @RequestBody BankTransaction transaction){
+        repository.updateTransactions(actual, transaction);
+    }
+
+
+    @RequestMapping(value = "/filter/{date}", method = RequestMethod.GET)
+    public void filterForDate(@RequestBody BankTransaction transaction, LocalDate date){
+        repository.filterForDate(date, transaction);
     }
 }
